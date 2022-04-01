@@ -28,14 +28,10 @@ def get_config():
   config.checkpoint_every_steps = 5000
 
   config.dataset = "mscoco"
-  config.coco_version = "2014"
+  config.coco_version = "2014-tmage"
   config.data_dir = "data/"
   config.return_text = False
   config.return_filename = False
-
-  # Tmage Changes
-  config.train_split = "train[:1000]"
-  config.eval_split = "val[400:600]"
 
   config.trial = 0  # dummy for repeated runs.
   config.beta1 = 0.5

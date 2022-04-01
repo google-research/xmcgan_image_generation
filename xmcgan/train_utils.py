@@ -319,9 +319,10 @@ def train(config: ml_collections.ConfigDict, workdir: str,
       contains checkpoint training will be resumed from the latest checkpoint.
     test_mode: If true, runs just one training iteration.
   """
+  logging.info("Entered train_utils train method")
   tf.io.gfile.makedirs(workdir)
   rng = jax.random.PRNGKey(config.seed)
-
+  
   if config.model_name == "xmc":
     gan_model = xmc_gan
   else:
@@ -330,6 +331,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   # Input pipeline.
   rng, data_rng = jax.random.split(rng)
   # Make sure each host uses a different RNG for the training data.
+  logging.info("create dataset ln=333")
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
@@ -354,6 +356,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
     logging.info("total_steps=%d", num_train_steps)
 
   # Initialize model
+  logging.info("Model initalization")
   rng, model_rng = jax.random.split(rng)
   init_batch = jax.tree_map(np.asarray, next(train_iter))
   init_batch = jax.tree_map(

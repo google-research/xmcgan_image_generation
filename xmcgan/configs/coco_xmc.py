@@ -52,7 +52,7 @@ def get_config():
   config.df_dim = 96
   config.gf_dim = 96
   config.z_dim = 128
-  config.num_epochs = 500
+  config.num_epochs = 1
   config.model_name = "xmc"
   config.d_step_per_g_step = 2
   config.g_spectral_norm = False

@@ -107,13 +107,13 @@ if __name__ == '__main__':
     output_path = f'data/coco2014_{process_split}.tfrecord'
     with tf.io.TFRecordWriter(output_path) as file_writer:
       for tfds_split in tfds_splits:
-        ds = tfds.load('coco_captions', split=tfds_split)
+        ds = tfds.load('coco_captions', split=tfds_split, data_dir='/ifs/loni/faculty/thompson/four_d/jnaik/cocodataset2014/data')
         for features in tqdm(ds, position=0):
           file_writer.write(serialize_example(features))
 
     # Shard dataset.
     raw_dataset = tf.data.TFRecordDataset(output_path)
-    num_shards = 100
+    num_shards = 10
     for i in range(num_shards):
       writer = tf.data.experimental.TFRecordWriter(
           f'{output_path}-{i}-of-{num_shards}')

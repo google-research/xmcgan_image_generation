@@ -20,7 +20,7 @@ from xmcgan.libml import base_dataset
 from xmcgan.libml import dataset_constants
 
 _DEFAULT_STORAGE_DIR = "xmcgan/data/"
-_VALID_DATASET_VERSIONS = ("2014",)
+_VALID_DATASET_VERSIONS = ("2014","2014-tmage")
 
 
 class COCODataset(base_dataset.BaseDataset):
@@ -171,7 +171,8 @@ class COCODataset(base_dataset.BaseDataset):
     if self.coco_version == "2017":
       return {"train": 116_680, "val": 4_958}
     elif self.coco_version == "2014":
-      return {"train": 82_783, "val": 40_504}
+      # return {"train": 82_783, "val": 40_504}
+      return {"train": 1_000, "val": 200}
     elif self.coco_version == "ln":
       return {"train": 134_272, "val": 8_573}
     elif self.coco_version == "2014-tmage":

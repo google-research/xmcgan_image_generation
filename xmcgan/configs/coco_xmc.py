@@ -28,7 +28,7 @@ def get_config():
   config.checkpoint_every_steps = 5000
 
   config.dataset = "mscoco"
-  config.coco_version = "2014-tmage"
+  config.coco_version = "2014"
   config.data_dir = "data/"
   config.return_text = False
   config.return_filename = False

@@ -57,13 +57,13 @@ def create_datasets(
         coco_version=config.coco_version,
         return_text=config.return_text,
         return_filename=config.return_filename)
-    train_split = "train"
-    eval_split = "val"
+    train_split = config.train_split
+    eval_split = config.eval_split
     preprocess_fn_train = functools.partial(
         dataset_builder.preprocess, training=True)
     preprocess_fn_eval = functools.partial(
         dataset_builder.preprocess, training=False)
-    num_train_examples = dataset_builder.num_examples["train"]
+    num_train_examples = dataset_builder.num_examples[train_split]
   else:
     raise NotImplementedError
 

@@ -33,6 +33,10 @@ def get_config():
   config.return_text = False
   config.return_filename = False
 
+  # Tmage Changes
+  config.train_split = "train[:1000]"
+  config.eval_split = "val[400:600]"
+
   config.trial = 0  # dummy for repeated runs.
   config.beta1 = 0.5
   config.beta2 = 0.999

@@ -2,6 +2,12 @@
 
 This repository hosts the open source [JAX](https://github.com/google/jax) implementation of [XMC-GAN](https://arxiv.org/abs/2101.04702).
 
+## Set params
+```
+export PATH=/usr/local/cuda-11.6/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-11.6/lib64${LD_LIBRARY_PATH+:${LD_LIBRARY_PATH}}
+export CUDA_HOME=/usr/local/cuda-11.6
+```
 
 ## Setup instructions
 

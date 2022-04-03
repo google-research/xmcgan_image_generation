@@ -20,12 +20,12 @@ def get_config():
   config = ml_collections.ConfigDict()
   config.seed = 42
 
-  config.eval_num = 200
+  config.eval_num = 25
   config.eval_avg_num = 3
   config.num_train_steps = -1
-  config.log_loss_every_steps = 1000
-  config.eval_every_steps = 1000
-  config.checkpoint_every_steps = 5000
+  config.log_loss_every_steps = 100
+  config.eval_every_steps = 100
+  config.checkpoint_every_steps = 500
 
   config.dataset = "mscoco"
   config.coco_version = "2014"
@@ -46,13 +46,13 @@ def get_config():
   config.train_shuffle = True
 
   config.image_size = 128
-  config.batch_size = 50
+  config.batch_size = 64
   config.eval_batch_size = 7
 
   config.df_dim = 96
   config.gf_dim = 96
   config.z_dim = 128
-  config.num_epochs = 100
+  config.num_epochs = 50
   config.model_name = "xmc"
   config.d_step_per_g_step = 2
   config.g_spectral_norm = False

@@ -163,6 +163,7 @@ def create_train_state(
   d_rng, g_rng, z_rng = jax.random.split(rng, 3)
   image = inputs["image"]
   batch_size = image.shape[0]
+  logging.info(f"Batch size={batch_size}, image shape={image.shape}")
   z = jax.random.normal(z_rng, (batch_size, config.z_dim), dtype=dtype)
   generator_variables = generator(train=False).init(g_rng, (inputs, z))
   generator_state = dict(generator_variables)
@@ -335,6 +336,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
+  logging.info(f"train dataset shape: {train_ds.shape}")
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
 

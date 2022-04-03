@@ -46,13 +46,13 @@ def get_config():
   config.train_shuffle = True
 
   config.image_size = 128
-  config.batch_size = 5
+  config.batch_size = 50
   config.eval_batch_size = 7
 
   config.df_dim = 96
   config.gf_dim = 96
   config.z_dim = 128
-  config.num_epochs = 1
+  config.num_epochs = 100
   config.model_name = "xmc"
   config.d_step_per_g_step = 2
   config.g_spectral_norm = False

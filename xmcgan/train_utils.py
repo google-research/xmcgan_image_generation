@@ -332,11 +332,11 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   # Input pipeline.
   rng, data_rng = jax.random.split(rng)
   # Make sure each host uses a different RNG for the training data.
-  logging.info("create dataset ln=333")
+  logging.info("create dataset")
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
-  logging.info(f"train dataset shape: {train_ds.shape}")
+  # logging.info(f"train dataset shape: {train_ds.shape}")
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
 

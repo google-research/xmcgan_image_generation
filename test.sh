@@ -15,7 +15,7 @@
 #!/bin/bash
 CONFIG="xmcgan/configs/coco_xmc.py"
 EXP_NAME=$1
-WORKDIR="/path/to/exp/$EXP_NAME"  # CHANGEME
+WORKDIR="/ifs/loni/faculty/thompson/four_d/jnaik/xmcgan_image_generation/$EXP_NAME"  # CHANGEME
 
 CUDA_VISIBLE_DEVICES="7" python -m xmcgan.main \
   --config="$CONFIG" \

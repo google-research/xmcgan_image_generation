@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import functools
+import logging
 from typing import Tuple
 
 from clu import deterministic_data
@@ -102,6 +103,10 @@ def create_datasets(
       shuffle=True,  # We need random order for dataset of imagenet
       pad_up_to_batches=eval_num_batches,
   )
+  # Tmage
+  # Print(dataset shape)
+  logging.info(f'Train datset shape {train_ds.shape}')
+  logging.info(f'Eval datset shape {eval_ds.shape}')
   # Temporary workaround. See b/179292577.
   options = tf.data.Options()
   options.experimental_external_state_policy = (

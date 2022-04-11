@@ -117,7 +117,8 @@ def train_step(
   Returns:
     The new model state and dictionary with metrics
   """
-
+  # Tmage1.0
+  logging.info(f'batch {len(batch)}, {batch}')
   rngs = jax.random.split(rng, config.d_step_per_g_step)
   batch = split_input_dict(batch, config.d_step_per_g_step)
 
@@ -163,6 +164,8 @@ def create_train_state(
   d_rng, g_rng, z_rng = jax.random.split(rng, 3)
   image = inputs["image"]
   batch_size = image.shape[0]
+  # Tmage1.0
+  logging.info(f'{batch_size}')
   logging.info(f"Batch size={batch_size}, image shape={image.shape}")
   z = jax.random.normal(z_rng, (batch_size, config.z_dim), dtype=dtype)
   generator_variables = generator(train=False).init(g_rng, (inputs, z))
@@ -174,6 +177,8 @@ def create_train_state(
       d_rng, [all_images, inputs])
   discriminator_state = dict(discriminator_variables)
   discriminator_params = discriminator_state.pop("params")
+  # Tmage1.0
+  logging.info(f'{generator_state}, {generator_params}, {discriminator_state}, {discriminator_params}')
 
   logging.info("logging generator parameters")
   parameter_overview.log_parameter_overview(generator_params)
@@ -267,6 +272,10 @@ def generate_batch(rng: np.ndarray, state: TrainState, batch: Dict[str,
     dtype = jnp.bfloat16
   else:
     dtype = jnp.float32
+
+  # Tmage1.0
+  logging.info(f'{len(batch)}')
+  logging.info(f'{batch["image"].shape}')
   z = jax.random.normal(
       rng, (batch["image"].shape[0], config.z_dim), dtype=dtype)
   g_variables = {"params": state.g_optimizer.target}
@@ -337,7 +346,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
   logging.info(train_ds)
-  # logging.info(f"train dataset shape: {train_ds.shape}")
+
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
 
@@ -364,8 +373,12 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   init_batch = jax.tree_map(np.asarray, next(train_iter))
   init_batch = jax.tree_map(
       lambda x: x[0], init_batch)  # Remove the device dim, still 4D tensor
+  logging.info(f'1 batch size {init_batch.shape}')
   init_batch = split_input_dict(init_batch, config.d_step_per_g_step)
+  logging.info(f'2 batch size {init_batch.shape}')
   init_batch = init_batch[0]
+  logging.info(f'3 batch size {init_batch.shape}')
+
   generator, discriminator, state = create_train_state(config, model_rng,
                                                        init_batch)
   # Shape (#local_device, d_step_g_ste*per_replica_size, ...)
@@ -424,13 +437,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
       # devices.
       is_last_step = step == config.num_train_steps
       with jax.profiler.StepTraceContext("train", step_num=step):
-        try:
-          next_batch = next(train_iter)
-        except:
-          logging.info(f'Error: batch: {batch}, initial_step:{initial_step}, num_train_steps: {num_train_steps}')
-
-        logging.info(f'train iterator size  {len(train_iter), {next_batch.shape}}')
-        batch = jax.tree_map(np.asarray, next_batch)
+        batch = jax.tree_map(np.asarray, next(train_iter))
         step_rng = jax.random.fold_in(train_rng, step)
         step_rngs = jax.random.split(step_rng, jax.local_device_count())
         state, metrics_update = p_train_step(step_rngs, state, batch)

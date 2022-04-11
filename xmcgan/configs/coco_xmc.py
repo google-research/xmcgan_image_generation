@@ -39,7 +39,7 @@ def get_config():
   config.d_lr = 0.0004
   config.g_lr = 0.0001
   config.polyak_decay = 0.999
-  config.show_num = 64
+  config.show_num = 25
   config.shuffle_buffer_size = 1000
   config.batch_norm_group_size = -1
   config.dtype = "bfloat16"

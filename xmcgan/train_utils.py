@@ -376,7 +376,6 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   logging.info(f'1 batch  {len(img)}')
   init_batch = split_input_dict(init_batch, config.d_step_per_g_step)
   init_batch = init_batch[0]
-  logging.info(f'2 batch  {init_batch}')
 
   generator, discriminator, state = create_train_state(config, model_rng,
                                                        init_batch)

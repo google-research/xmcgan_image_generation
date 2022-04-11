@@ -112,7 +112,7 @@ def create_datasets(
 
   # Tmage
   # Print(dataset shape)
-  logging.info(f'Train datset shape {train_ds.bufferSizeMin()}')
-  logging.info(f'Eval datset shape {eval_ds.bufferSizeMin()}')
+  # logging.info(f'Train datset shape {train_ds.bufferSizeMin()}')
+  # logging.info(f'Eval datset shape {eval_ds.bufferSizeMin()}')
   
   return train_ds, eval_ds, num_train_examples

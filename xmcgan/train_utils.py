@@ -372,7 +372,8 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   init_batch = jax.tree_map(np.asarray, next(train_iter))
   init_batch = jax.tree_map(
       lambda x: x[0], init_batch)  # Remove the device dim, still 4D tensor
-  logging.info(f'1 batch  {init_batch}')
+  img = init_batch['image']
+  logging.info(f'1 batch  {len(img)}')
   init_batch = split_input_dict(init_batch, config.d_step_per_g_step)
   init_batch = init_batch[0]
   logging.info(f'2 batch  {init_batch}')

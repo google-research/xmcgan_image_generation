@@ -165,7 +165,6 @@ def create_train_state(
   image = inputs["image"]
   batch_size = image.shape[0]
   # Tmage1.0
-  logging.info(f'{batch_size}')
   logging.info(f"Batch size={batch_size}, image shape={image.shape}")
   z = jax.random.normal(z_rng, (batch_size, config.z_dim), dtype=dtype)
   generator_variables = generator(train=False).init(g_rng, (inputs, z))
@@ -373,11 +372,10 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   init_batch = jax.tree_map(np.asarray, next(train_iter))
   init_batch = jax.tree_map(
       lambda x: x[0], init_batch)  # Remove the device dim, still 4D tensor
-  logging.info(f'1 batch size {len(init_batch)}')
+  logging.info(f'1 batch  {init_batch}')
   init_batch = split_input_dict(init_batch, config.d_step_per_g_step)
-  logging.info(f'2 batch size {len(init_batch)}')
   init_batch = init_batch[0]
-  logging.info(f'3 batch size {len(init_batch)}')
+  logging.info(f'2 batch  {init_batch}')
 
   generator, discriminator, state = create_train_state(config, model_rng,
                                                        init_batch)

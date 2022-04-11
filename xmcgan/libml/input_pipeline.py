@@ -103,14 +103,16 @@ def create_datasets(
       shuffle=True,  # We need random order for dataset of imagenet
       pad_up_to_batches=eval_num_batches,
   )
-  # Tmage
-  # Print(dataset shape)
-  logging.info(f'Train datset shape {train_ds.shape}')
-  logging.info(f'Eval datset shape {eval_ds.shape}')
   # Temporary workaround. See b/179292577.
   options = tf.data.Options()
   options.experimental_external_state_policy = (
       tf.data.experimental.ExternalStatePolicy.WARN)
   train_ds = train_ds.with_options(options)
   eval_ds = eval_ds.with_options(options)
+
+  # Tmage
+  # Print(dataset shape)
+  logging.info(f'Train datset shape {train_ds.bufferSizeMin()}')
+  logging.info(f'Eval datset shape {eval_ds.bufferSizeMin()}')
+  
   return train_ds, eval_ds, num_train_examples

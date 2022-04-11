@@ -336,6 +336,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
+  logging.info(train_ds)
   # logging.info(f"train dataset shape: {train_ds.shape}")
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
@@ -423,7 +424,13 @@ def train(config: ml_collections.ConfigDict, workdir: str,
       # devices.
       is_last_step = step == config.num_train_steps
       with jax.profiler.StepTraceContext("train", step_num=step):
-        batch = jax.tree_map(np.asarray, next(train_iter))
+        try:
+          next_batch = next(train_iter)
+        except:
+          logging.info(f'Error: batch: {batch}, initial_step:{initial_step}, num_train_steps: {num_train_steps}')
+
+        logging.info(f'train iterator size  {len(train_iter), {next_batch.shape}}')
+        batch = jax.tree_map(np.asarray, next_batch)
         step_rng = jax.random.fold_in(train_rng, step)
         step_rngs = jax.random.split(step_rng, jax.local_device_count())
         state, metrics_update = p_train_step(step_rngs, state, batch)

@@ -108,17 +108,18 @@ def create_datasets(
   # Temporary workaround. See b/179292577.
 
   # Tmage1.0
-  aggregator = tf.data.experimental.StatsAggregator()
+
+  # aggregator = tf.data.experimental.StatsAggregator()
 
   options = tf.data.Options()
   options.experimental_external_state_policy = (
       tf.data.experimental.ExternalStatePolicy.WARN)
-  options.experimental_stats.aggregator = aggregator
+  # options.experimental_stats.aggregator = aggregator
   train_ds = train_ds.with_options(options)
   eval_ds = eval_ds.with_options(options)
 
-  stats_summary = stats_aggregator.get_summary()
-  logging.info(f'Stats summary {stats_summary}')
+  # stats_summary = stats_aggregator.get_summary()
+  # logging.info(f'Stats summary {stats_summary}')
 
   # Tmage
   # logging.info(f'Train datset shape {train_ds.bufferSizeMin()}')

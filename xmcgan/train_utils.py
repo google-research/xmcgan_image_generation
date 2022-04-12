@@ -433,8 +433,10 @@ def train(config: ml_collections.ConfigDict, workdir: str,
       with jax.profiler.StepTraceContext("train", step_num=step):
         batch = jax.tree_map(np.asarray, next(train_iter))
         if step == 1:
-          img = batch['embedding']
-          logging.info(f'Batch size {len(img)}')
+          emb = batch['embedding']
+          img = batch['image']
+          img_aug = batch['image_aug']
+          logging.info(f'Batch size {len(img)}, {len(img)}, {len(img_aug)}')
         step_rng = jax.random.fold_in(train_rng, step)
         step_rngs = jax.random.split(step_rng, jax.local_device_count())
         state, metrics_update = p_train_step(step_rngs, state, batch)

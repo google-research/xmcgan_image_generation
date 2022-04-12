@@ -353,7 +353,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
     if config.dataset == "mscoco":
       single_device_batch_size = config.batch_size / jax.device_count()
       steps_per_epoch = num_train_examples // (
-          jax.local_device_count() * config.d_step_per_g_step)
+          jax.local_device_count() * config.d_step_per_g_step * config.batch_size)
       num_train_steps = steps_per_epoch * config.num_epochs
     else:
       num_train_steps = train_ds.cardinality().numpy()

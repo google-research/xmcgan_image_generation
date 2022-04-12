@@ -337,8 +337,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   additional_data = gan_model.create_additional_data(config)
   # Input pipeline.
   rng, data_rng = jax.random.split(rng)
-  # Make sure each host uses a different RNG for the training data.
-  logging.info("create dataset")
+  # Make sure each host uses a different RNG for the training data
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
@@ -365,13 +364,12 @@ def train(config: ml_collections.ConfigDict, workdir: str,
     logging.info("total_steps=%d", num_train_steps)
 
   # Initialize model
-  logging.info("Model initalization")
   rng, model_rng = jax.random.split(rng)
   init_batch = jax.tree_map(np.asarray, next(train_iter))
   init_batch = jax.tree_map(
       lambda x: x[0], init_batch)  # Remove the device dim, still 4D tensor
   img = init_batch['image']
-  logging.info(f'1 batch  {len(img)}')
+  logging.info(f'Batch size {len(img)}')
   init_batch = split_input_dict(init_batch, config.d_step_per_g_step)
   init_batch = init_batch[0]
 

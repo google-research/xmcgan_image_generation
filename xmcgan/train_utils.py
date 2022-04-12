@@ -433,6 +433,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
     for step in range(initial_step, num_train_steps + 1):
       # `step` is a Python integer. `state.step` is JAX integer on the GPU/TPU
       # devices.
+      logging.info(f'Current step: {step}')
       is_last_step = step == config.num_train_steps
       with jax.profiler.StepTraceContext("train", step_num=step):
         batch = jax.tree_map(np.asarray, next(train_iter))

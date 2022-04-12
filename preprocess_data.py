@@ -109,7 +109,7 @@ if __name__ == '__main__':
     with tf.io.TFRecordWriter(output_path) as file_writer:
       for tfds_split in tfds_splits:
         ds = tfds.load('coco_captions', split=tfds_split, data_dir='/ifs/loni/faculty/thompson/four_d/jnaik/cocodataset2014/data')
-        logging.info(f'Hiiiiiiiiii {len(list(ds))}')
+        print(f'Hiiiiiiiiii {len(list(ds))}')
         for features in tqdm(ds, position=0):
           file_writer.write(serialize_example(features))
 

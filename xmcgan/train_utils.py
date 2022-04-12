@@ -176,8 +176,6 @@ def create_train_state(
       d_rng, [all_images, inputs])
   discriminator_state = dict(discriminator_variables)
   discriminator_params = discriminator_state.pop("params")
-  # Tmage1.0
-  logging.info(f'{generator_state}, {generator_params}, {discriminator_state}, {discriminator_params}')
 
   logging.info("logging generator parameters")
   parameter_overview.log_parameter_overview(generator_params)

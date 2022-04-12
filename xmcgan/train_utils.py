@@ -341,10 +341,12 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
-  logging.info(train_ds)
+  logging.info(f'dataset {train_ds}')
 
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
+
+  logging.info(f'Iterator {train_iter}')
 
   num_train_steps = config.num_train_steps
   if num_train_steps == -1:

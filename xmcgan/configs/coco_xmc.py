@@ -39,14 +39,14 @@ def get_config():
   config.d_lr = 0.0004
   config.g_lr = 0.0001
   config.polyak_decay = 0.999
-  config.show_num = 25
+  config.show_num = 8
   config.shuffle_buffer_size = 1000
   config.batch_norm_group_size = -1
   config.dtype = "bfloat16"
   config.train_shuffle = True
 
   config.image_size = 128
-  config.batch_size = 25
+  config.batch_size = 8
   config.eval_batch_size = 5
   config.df_dim = 96
   config.gf_dim = 96

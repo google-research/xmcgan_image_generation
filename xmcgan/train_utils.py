@@ -381,7 +381,7 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   batch_visualize = jax.tree_map(np.asarray, next(train_iter))
   batch_visualize = split_input_dict(
       batch_visualize, config.d_step_per_g_step, axis=1)[0]
-
+  logging.info(f'Batch size {len(batch_visualize)}')
   checkpoint_dir = os.path.join(workdir, "checkpoints")
   task_manager_csv = task_manager.TaskManagerWithCsvResults(checkpoint_dir)
   ckpt = checkpoint.MultihostCheckpoint(

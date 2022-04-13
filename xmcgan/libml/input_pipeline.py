@@ -109,19 +109,19 @@ def create_datasets(
 
   # Tmage1.0
 
-  stats_aggregator = stats_ops.StatsAggregator()
+  # stats_aggregator = stats_ops.StatsAggregator()
 
   options = tf.data.Options()
   options.experimental_external_state_policy = (
       tf.data.experimental.ExternalStatePolicy.WARN)
-  options.experimental_stats.aggregator = stats_aggregator
+  # options.experimental_stats.aggregator = stats_aggregator
   train_ds = train_ds.with_options(options)
   eval_ds = eval_ds.with_options(options)
 
-  stats_summary = stats_aggregator.get_summary()
-  tf.compat.v1.add_to_collection(tf.GraphKeys.SUMMARIES, stats_summary)
+  # stats_summary = stats_aggregator.get_summary()
+  # tf.compat.v1.add_to_collection(tf.GraphKeys.SUMMARIES, stats_summary)
 
-  logging.info(f'Stats summary {stats_summary}')
+  # logging.info(f'Stats summary {stats_summary}')
 
   # Tmage
   # logging.info(f'Train datset shape {train_ds.bufferSizeMin()}')

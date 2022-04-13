@@ -22,7 +22,7 @@ import ml_collections
 import tensorflow as tf
 from xmcgan.libml import coco_dataset
 
-from tensorflow.python.data.experimental.ops import stats_aggregator
+from tensorflow.contrib.data.python.ops import stats_ops
 
 _CUSTOM_DATASETS = ["mscoco"]
 
@@ -109,16 +109,18 @@ def create_datasets(
 
   # Tmage1.0
 
-  aggregator = tf.data.experimental.StatsAggregator()
+  stats_aggregator = stats_ops.StatsAggregator()
 
   options = tf.data.Options()
   options.experimental_external_state_policy = (
       tf.data.experimental.ExternalStatePolicy.WARN)
-  options.experimental_stats.aggregator = aggregator
+  options.experimental_stats.aggregator = stats_aggregator
   train_ds = train_ds.with_options(options)
   eval_ds = eval_ds.with_options(options)
 
   stats_summary = stats_aggregator.get_summary()
+  tf.compat.v1.add_to_collection(tf.GraphKeys.SUMMARIES, stats_summary)
+
   logging.info(f'Stats summary {stats_summary}')
 
   # Tmage

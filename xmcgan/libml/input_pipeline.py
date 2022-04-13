@@ -22,7 +22,7 @@ import ml_collections
 import tensorflow as tf
 from xmcgan.libml import coco_dataset
 
-from tensorflow.contrib.data.python.ops import stats_ops
+# from tensorflow.contrib.data.python.ops import stats_ops
 
 _CUSTOM_DATASETS = ["mscoco"]
 

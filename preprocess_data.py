@@ -100,16 +100,15 @@ def serialize_example(ex):
 if __name__ == '__main__':
   # Preprocess train and val data.
   for process_split in ['train', 'validation']:
-    tfds_splits = ['train[:1000]']
+    tfds_splits = ['train[:5000]']
     # COCO-2014 consists of 40k examples from these three splits.
     if process_split == 'validation':
-      tfds_splits = ['restval[:200]', 'test[200:400]', 'val[400:600]']
+      tfds_splits = ['restval[:2000]', 'test[2000:4000]', 'val[4000:6000]']
 
     output_path = f'data/coco2014_{process_split}.tfrecord'
     with tf.io.TFRecordWriter(output_path) as file_writer:
       for tfds_split in tfds_splits:
         ds = tfds.load('coco_captions', split=tfds_split, data_dir='/ifs/loni/faculty/thompson/four_d/jnaik/cocodataset2014/data')
-        print(f'Hiiiiiiiiii {len(list(ds))}')
         for features in tqdm(ds, position=0):
           file_writer.write(serialize_example(features))
 

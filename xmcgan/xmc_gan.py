@@ -172,7 +172,7 @@ def train_g_d(
   new_d_optimizer = state.d_optimizer.apply_gradient(d_grad)
   new_g_optimizer = state.g_optimizer.apply_gradient(g_grad)
   ema_decay = config.polyak_decay
-  new_ema_params = jax.tree_multimap(
+  new__params = jax.tree_multimap(
       lambda ema, p: ema * ema_decay + (1 - ema_decay) * p, state.ema_params,
       new_g_optimizer.target)
   new_state = state.replace(  # pytype: disable=attribute-error

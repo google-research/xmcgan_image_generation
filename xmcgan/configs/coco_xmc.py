@@ -20,12 +20,12 @@ def get_config():
   config = ml_collections.ConfigDict()
   config.seed = 42
 
-  config.eval_num = 25
+  config.eval_num = 30000
   config.eval_avg_num = 3
   config.num_train_steps = -1
-  config.log_loss_every_steps = 100
-  config.eval_every_steps = 100
-  config.checkpoint_every_steps = 500
+  config.log_loss_every_steps = 1000
+  config.eval_every_steps = 1000
+  config.checkpoint_every_steps = 5000
 
   config.dataset = "mscoco"
   config.coco_version = "2014"
@@ -39,14 +39,14 @@ def get_config():
   config.d_lr = 0.0004
   config.g_lr = 0.0001
   config.polyak_decay = 0.999
-  config.show_num = 8
+  config.show_num = 64
   config.shuffle_buffer_size = 1000
   config.batch_norm_group_size = -1
   config.dtype = "bfloat16"
   config.train_shuffle = True
 
   config.image_size = 128
-  config.batch_size = 25
+  config.batch_size = 56
   config.eval_batch_size = 7
 
   config.df_dim = 96

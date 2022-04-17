@@ -47,7 +47,7 @@ class TrainState:
   d_optimizer: flax.optim.Optimizer
   generator_state: Optional[Any]
   discriminator_state: Optional[Any]
-  _params: Any
+  ema_params: Any
 
 
 @flax.struct.dataclass

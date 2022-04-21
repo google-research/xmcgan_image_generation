@@ -117,7 +117,8 @@ def train_step(
   Returns:
     The new model state and dictionary with metrics
   """
-
+  # Tmage1.0
+  logging.info(f'batch {len(batch)}, {batch}')
   rngs = jax.random.split(rng, config.d_step_per_g_step)
   batch = split_input_dict(batch, config.d_step_per_g_step)
 
@@ -163,6 +164,8 @@ def create_train_state(
   d_rng, g_rng, z_rng = jax.random.split(rng, 3)
   image = inputs["image"]
   batch_size = image.shape[0]
+  # Tmage1.0
+  logging.info(f"Batch size={batch_size}, image shape={image.shape}")
   z = jax.random.normal(z_rng, (batch_size, config.z_dim), dtype=dtype)
   generator_variables = generator(train=False).init(g_rng, (inputs, z))
   generator_state = dict(generator_variables)
@@ -266,6 +269,10 @@ def generate_batch(rng: np.ndarray, state: TrainState, batch: Dict[str,
     dtype = jnp.bfloat16
   else:
     dtype = jnp.float32
+
+  # Tmage1.0
+  logging.info(f'{len(batch)}')
+  logging.info(f'{batch["image"].shape}')
   z = jax.random.normal(
       rng, (batch["image"].shape[0], config.z_dim), dtype=dtype)
   g_variables = {"params": state.g_optimizer.target}
@@ -319,9 +326,10 @@ def train(config: ml_collections.ConfigDict, workdir: str,
       contains checkpoint training will be resumed from the latest checkpoint.
     test_mode: If true, runs just one training iteration.
   """
+  logging.info("Entered train_utils train method")
   tf.io.gfile.makedirs(workdir)
   rng = jax.random.PRNGKey(config.seed)
-
+  
   if config.model_name == "xmc":
     gan_model = xmc_gan
   else:
@@ -329,12 +337,16 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   additional_data = gan_model.create_additional_data(config)
   # Input pipeline.
   rng, data_rng = jax.random.split(rng)
-  # Make sure each host uses a different RNG for the training data.
+  # Make sure each host uses a different RNG for the training data
   data_rng = jax.random.fold_in(data_rng, jax.host_id())
   train_ds, eval_ds, num_train_examples = input_pipeline.create_datasets(
       config, data_rng)
+  logging.info(f'dataset {train_ds}')
+
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
+
+  logging.info(f'Iterator {train_iter}')
 
   num_train_steps = config.num_train_steps
   if num_train_steps == -1:
@@ -358,15 +370,18 @@ def train(config: ml_collections.ConfigDict, workdir: str,
   init_batch = jax.tree_map(np.asarray, next(train_iter))
   init_batch = jax.tree_map(
       lambda x: x[0], init_batch)  # Remove the device dim, still 4D tensor
+  img = init_batch['image']
+  logging.info(f'Batch size {len(img)}')
   init_batch = split_input_dict(init_batch, config.d_step_per_g_step)
   init_batch = init_batch[0]
+
   generator, discriminator, state = create_train_state(config, model_rng,
                                                        init_batch)
   # Shape (#local_device, d_step_g_ste*per_replica_size, ...)
   batch_visualize = jax.tree_map(np.asarray, next(train_iter))
   batch_visualize = split_input_dict(
       batch_visualize, config.d_step_per_g_step, axis=1)[0]
-
+  logging.info(f'Batch size {len(batch_visualize)}')
   checkpoint_dir = os.path.join(workdir, "checkpoints")
   task_manager_csv = task_manager.TaskManagerWithCsvResults(checkpoint_dir)
   ckpt = checkpoint.MultihostCheckpoint(
@@ -419,6 +434,11 @@ def train(config: ml_collections.ConfigDict, workdir: str,
       is_last_step = step == config.num_train_steps
       with jax.profiler.StepTraceContext("train", step_num=step):
         batch = jax.tree_map(np.asarray, next(train_iter))
+        if step == 1:
+          emb = batch['embedding']
+          img = batch['image']
+          img_aug = batch['image_aug']
+          logging.info(f'Batch size {len(img)}, {len(img)}, {len(img_aug)}')
         step_rng = jax.random.fold_in(train_rng, step)
         step_rngs = jax.random.split(step_rng, jax.local_device_count())
         state, metrics_update = p_train_step(step_rngs, state, batch)

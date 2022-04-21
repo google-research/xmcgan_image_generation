@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import functools
+import logging
 from typing import Tuple
 
 from clu import deterministic_data
@@ -20,6 +21,8 @@ import jax
 import ml_collections
 import tensorflow as tf
 from xmcgan.libml import coco_dataset
+
+# from tensorflow.contrib.data.python.ops import stats_ops
 
 _CUSTOM_DATASETS = ["mscoco"]
 
@@ -68,6 +71,7 @@ def create_datasets(
     raise NotImplementedError
 
   train_data_rng, eval_data_rng = jax.random.split(data_rng, 2)
+
   train_ds = deterministic_data.create_dataset(
       dataset_builder,
       split=train_split,
@@ -102,9 +106,25 @@ def create_datasets(
       pad_up_to_batches=eval_num_batches,
   )
   # Temporary workaround. See b/179292577.
+
+  # Tmage1.0
+
+  # stats_aggregator = stats_ops.StatsAggregator()
+
   options = tf.data.Options()
   options.experimental_external_state_policy = (
       tf.data.experimental.ExternalStatePolicy.WARN)
+  # options.experimental_stats.aggregator = stats_aggregator
   train_ds = train_ds.with_options(options)
   eval_ds = eval_ds.with_options(options)
+
+  # stats_summary = stats_aggregator.get_summary()
+  # tf.compat.v1.add_to_collection(tf.GraphKeys.SUMMARIES, stats_summary)
+
+  # logging.info(f'Stats summary {stats_summary}')
+
+  # Tmage
+  # logging.info(f'Train datset shape {train_ds.bufferSizeMin()}')
+  # logging.info(f'Eval datset shape {eval_ds.bufferSizeMin()}')
+  
   return train_ds, eval_ds, num_train_examples

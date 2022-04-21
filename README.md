@@ -2,6 +2,12 @@
 
 This repository hosts the open source [JAX](https://github.com/google/jax) implementation of [XMC-GAN](https://arxiv.org/abs/2101.04702).
 
+## Set params
+```
+export PATH=/usr/local/cuda-11.6/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-11.6/lib64${LD_LIBRARY_PATH+:${LD_LIBRARY_PATH}}
+export CUDA_HOME=/usr/local/cuda-11.6
+```
 
 ## Setup instructions
 
@@ -70,7 +76,7 @@ Start a training run, by first editing `train.sh` to specify an appropriate work
 After configuring the training job, start an experiment by running it on bash:
 ```
 mkdir exp
-bash train.sh exp_name &> train.txt
+bash train.sh exp_name &> /logs/train.txt
 ```
 
 Checkpoints and Tensorboard logs will be saved in `/path/to/exp/exp_name`. By default, the configs/coco_xmc.py config is used, which runs an experiment for 128px images. This is able to accommodate a batch size of 8 on each GPU, and achieves an FID of around 10.5 - 11.0 with the EMA weights. To reproduce the full results on 256px images in our paper, the full model needs to be run using a 32-core Pod slice of [Google Cloud TPU v3](https://cloud.google.com/tpu) devices.

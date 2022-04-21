@@ -113,7 +113,8 @@ if __name__ == '__main__':
               ds = tfds.load('coco_captions', split=tfds_split, data_dir='/ifs/loni/faculty/thompson/four_d/jnaik/cocodataset2014/data')
               for features in tqdm(ds, position=0):
                   filename = features['image/filename']
-                  if tfds_split != 'train' or filename.numpy() in coco_mini_dataset:
+                  filename = bytes.decode(filename.numpy())
+                  if tfds_split != 'train' or filename in coco_mini_dataset:
                       print('True')
                       file_writer.write(serialize_example(features))
 

@@ -114,6 +114,7 @@ if __name__ == '__main__':
               for features in tqdm(ds, position=0):
                   filename = features['image/filename']
                   filename = bytes.decode(filename.numpy())
+                  print(filename)
                   if tfds_split != 'train' or filename in coco_mini_dataset:
                       print('True')
                       file_writer.write(serialize_example(features))

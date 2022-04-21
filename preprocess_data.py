@@ -116,7 +116,6 @@ if __name__ == '__main__':
                   filename = bytes.decode(filename.numpy()).split('.jpg')[0]
                   if tfds_split == 'train':
                       if filename in coco_mini_dataset:
-                         print('True')
                          file_writer.write(serialize_example(features))
                   else:
                       file_writer.write(serialize_example(features))

@@ -99,7 +99,7 @@ def serialize_example(ex):
 
 if __name__ == '__main__':
   # Preprocess train and val data.
-  coco_mini_dataset = set(line.strip() for line in open('/home1/jnaik/CSCI566-Project/code_base/xmcgan_image_generation/data/minicoco_train_fnames_2014.txt'))
+  coco_mini_dataset = set(line.strip() for line in open('/data/minicoco_train_fnames_2014.txt'))
 
   for process_split in ['train', 'validation']:
       tfds_splits = ['train']

@@ -121,6 +121,9 @@ class EvalMetric:
         ema_g_variables, (batch, z), mutable=False)
     generated_image = jnp.asarray(generated_image, jnp.float32)
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
+
+    print(generated_image.size())
+
     return generated_image, ema_generated_image
 
   def _get_generated_pool_for_evaluation(self,

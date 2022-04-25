@@ -99,13 +99,14 @@ def serialize_example(ex):
 
 if __name__ == '__main__':
   # Preprocess train and val data.
-  coco_mini_dataset = set(line.strip() for line in open('/ifs/loni/faculty/thompson/four_d/jnaik/xmcgan_image_generation/data/minicoco_train_fnames_2014.txt'))
+  coco_mini_train_dataset = set(line.strip() for line in open('/ifs/loni/faculty/thompson/four_d/jnaik/xmcgan_image_generation/data/minicoco_train_fnames_2014.txt'))
+  coco_mini_val_dataset = set(line.strip() for line in open('/ifs/loni/faculty/thompson/four_d/jnaik/xmcgan_image_generation/data/minicoco_val_fnames_2014.txt'))
   
   for process_split in ['validation']:
       tfds_splits = ['train']
       # COCO-2014 consists of 40k examples from these three splits.
       if process_split == 'validation':
-          tfds_splits = ['val']
+          tfds_splits = ['restval', 'test', 'val']
 
       output_path = f'data/coco2014_{process_split}.tfrecord'
       with tf.io.TFRecordWriter(output_path) as file_writer:
@@ -116,13 +117,14 @@ if __name__ == '__main__':
               for features in tqdm(ds, position=0):
                   filename = features['image/filename']
                   filename = bytes.decode(filename.numpy()).split('.jpg')
-                  if tfds_split == 'train':
-                      if filename[0] in coco_mini_dataset:
+                  if process_split == 'train':
+                      if filename[0] in coco_mini_train_dataset:
                          fil_tr_count += 1
                          file_writer.write(serialize_example(features))
                   else:
-                      count += 1
-                      file_writer.write(serialize_example(features))
+                      if filename[0] in coco_mini_val_dataset:
+                        count += 1
+                        file_writer.write(serialize_example(features))
               
               print(fil_tr_count, count)
 

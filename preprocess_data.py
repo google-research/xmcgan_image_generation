@@ -100,7 +100,7 @@ def serialize_example(ex):
 if __name__ == '__main__':
   # Preprocess train and val data.
   coco_mini_dataset = set(line.strip() for line in open('/ifs/loni/faculty/thompson/four_d/jnaik/xmcgan_image_generation/data/minicoco_train_fnames_2014.txt'))
-  print(coco_mini_dataset)
+  
   for process_split in ['train', 'validation']:
       tfds_splits = ['train']
       # COCO-2014 consists of 40k examples from these three splits.

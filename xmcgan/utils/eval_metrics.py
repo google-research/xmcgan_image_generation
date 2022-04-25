@@ -124,8 +124,8 @@ class EvalMetric:
     generated_image = jnp.asarray(generated_image, jnp.float32)
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
 
-    imageio.imwrite('filename.jpeg', np.asarray(generated_image))
-    imageio.imwrite('filename.jpeg', np.asarray(ema_generated_image))
+    imageio.imwrite('filename.jpeg', generated_image)
+    imageio.imwrite('filename.jpeg', ema_generated_image)
 
     return generated_image, ema_generated_image
 

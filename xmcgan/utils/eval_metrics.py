@@ -23,6 +23,7 @@ import ml_collections
 import numpy as np
 import tensorflow as tf
 import imageio
+from jax.experimental import host_callback as hcb
 
 from xmcgan.utils import inception_utils
 
@@ -69,6 +70,11 @@ class EvalMetric:
         axis_name="batch")
     # Calculates pooling feature for real image only once to save time.
     self._pool = self._get_real_pool_for_evaluation()
+
+  def _jax_save(file, arr):
+      def save_to_file(a):
+          jax.numpy.save(file, a)
+      hcb.id_tap(save_to_file, arr)
 
   def _get_real_pool_for_evaluation(self):
     """Gets numpy arrays for pooling features and logits for real images."""
@@ -124,8 +130,7 @@ class EvalMetric:
     generated_image = jnp.asarray(generated_image, jnp.float32)
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
 
-    imageio.imwrite('filename.jpeg', generated_image)
-    imageio.imwrite('filename.jpeg', ema_generated_image)
+    self._jax_save('generated_image.jpg', generated_image)
 
     return generated_image, ema_generated_image
 
@@ -220,3 +225,4 @@ class EvalMetric:
 
     return (fid, fid_std, inception_score, inception_score_std, ema_fid,
             ema_fid_std, ema_inception_score, ema_inception_score_std)
+

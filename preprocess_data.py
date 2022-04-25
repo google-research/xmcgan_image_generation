@@ -105,7 +105,7 @@ if __name__ == '__main__':
       tfds_splits = ['train']
       # COCO-2014 consists of 40k examples from these three splits.
       if process_split == 'validation':
-          tfds_splits = ['restval', 'test', 'val']
+          tfds_splits = ['restval[:1000]', 'test[:1000]', 'val[:1000]']
 
       output_path = f'data/coco2014_{process_split}.tfrecord'
       with tf.io.TFRecordWriter(output_path) as file_writer:
@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
       # Shard dataset.
       raw_dataset = tf.data.TFRecordDataset(output_path)
-      num_shards = 100
+      num_shards = 4
       for i in range(num_shards):
         writer = tf.data.experimental.TFRecordWriter(
             f'{output_path}-{i}-of-{num_shards}')

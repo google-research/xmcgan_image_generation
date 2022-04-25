@@ -22,6 +22,7 @@ import jax.numpy as jnp
 import ml_collections
 import numpy as np
 import tensorflow as tf
+import imageio
 
 from xmcgan.utils import inception_utils
 
@@ -113,6 +114,7 @@ class EvalMetric:
         rng, (batch["image"].shape[0], config.z_dim), dtype=dtype)
     g_variables = {"params": state.g_optimizer.target}
     ema_g_variables = {"params": state.ema_params}
+    print(state.ema_params)
     g_variables.update(state.generator_state)
     ema_g_variables.update(state.generator_state)
 
@@ -122,7 +124,8 @@ class EvalMetric:
     generated_image = jnp.asarray(generated_image, jnp.float32)
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
 
-    print(generated_image.size())
+    imageio.imwrite('filename.jpeg', np.asarray(generated_image))
+    imageio.imwrite('filename.jpeg', np.asarray(ema_generated_image))
 
     return generated_image, ema_generated_image
 

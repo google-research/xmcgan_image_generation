@@ -101,11 +101,11 @@ if __name__ == '__main__':
   # Preprocess train and val data.
   coco_mini_dataset = set(line.strip() for line in open('/ifs/loni/faculty/thompson/four_d/jnaik/xmcgan_image_generation/data/minicoco_train_fnames_2014.txt'))
   
-  for process_split in ['train', 'validation']:
+  for process_split in ['validation']:
       tfds_splits = ['train']
       # COCO-2014 consists of 40k examples from these three splits.
       if process_split == 'validation':
-          tfds_splits = ['restval[:1000]', 'test[:1000]', 'val[:1000]']
+          tfds_splits = ['val']
 
       output_path = f'data/coco2014_{process_split}.tfrecord'
       with tf.io.TFRecordWriter(output_path) as file_writer:

@@ -110,15 +110,21 @@ if __name__ == '__main__':
       output_path = f'data/coco2014_{process_split}.tfrecord'
       with tf.io.TFRecordWriter(output_path) as file_writer:
           for tfds_split in tfds_splits:
+              fil_tr_count = 0
+              count = 0
               ds = tfds.load('coco_captions', split=tfds_split, data_dir='/ifs/loni/faculty/thompson/four_d/jnaik/cocodataset2014/data')
               for features in tqdm(ds, position=0):
                   filename = features['image/filename']
                   filename = bytes.decode(filename.numpy()).split('.jpg')
                   if tfds_split == 'train':
                       if filename[0] in coco_mini_dataset:
+                         fil_tr_count += 1
                          file_writer.write(serialize_example(features))
                   else:
+                      count += 1
                       file_writer.write(serialize_example(features))
+              
+              print(fil_tr_count, count)
 
       # Shard dataset.
       raw_dataset = tf.data.TFRecordDataset(output_path)

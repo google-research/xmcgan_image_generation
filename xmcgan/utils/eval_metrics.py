@@ -129,7 +129,7 @@ class EvalMetric:
     generated_image = jnp.asarray(generated_image, jnp.float32)
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
 
-    jax_save('', generated_image)
+    jax_save('generated', generated_image)
 
     return generated_image, ema_generated_image
 

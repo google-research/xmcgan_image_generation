@@ -153,7 +153,7 @@ def create_train_state(
   inputs = init_batch
 
   print('&*********************** Create train state, check for filename &***********************')
-  print(f'{inputs["image/filename"]}')
+  print(f'{inputs}')
 
   if config.architecture == "xmc_net":
     generator_cls = xmc_net.Generator

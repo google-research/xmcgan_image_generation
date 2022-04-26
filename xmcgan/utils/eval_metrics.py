@@ -109,6 +109,7 @@ class EvalMetric:
     """
     def jax_save(file, arr):
       def save_to_file(a, transforms):
+          print("save image")
           B, _, _, _ = a.shape()
           for i in range(B):
             jax.numpy.save('/images/'+file[i], a[i])
@@ -132,6 +133,7 @@ class EvalMetric:
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
 
     filenames = batch["filename"]
+    print("Save batches")
     jax_save(filenames, generated_image)
 
     return generated_image, ema_generated_image

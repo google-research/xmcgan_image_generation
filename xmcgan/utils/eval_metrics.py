@@ -108,9 +108,9 @@ class EvalMetric:
       ema_generated_image: [batch_size, H, W, 3] array with values in [0, 1].
     """
     def jax_save(file, arr):
-      def save_to_file(a):
+      def save_to_file(file, a):
           jax.numpy.save(file, a)
-      hcb.id_tap(save_to_file, arr)
+      hcb.id_tap(save_to_file, file, arr)
 
     if config.dtype == "bfloat16":
       dtype = jnp.bfloat16

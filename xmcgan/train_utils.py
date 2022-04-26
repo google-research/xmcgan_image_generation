@@ -152,6 +152,9 @@ def create_train_state(
     dtype = jnp.float32
   inputs = init_batch
 
+  print('&*********************** Create train state, check for filename &***********************')
+  print(f'{inputs["image/filename"]}')
+
   if config.architecture == "xmc_net":
     generator_cls = xmc_net.Generator
     discriminator_cls = xmc_net.Discriminator
@@ -162,7 +165,6 @@ def create_train_state(
       discriminator_cls, config=config, dtype=dtype)
 
   d_rng, g_rng, z_rng = jax.random.split(rng, 3)
-  print(inputs)
   image = inputs["image"]
   batch_size = image.shape[0]
   # Tmage1.0

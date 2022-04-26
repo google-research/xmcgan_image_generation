@@ -163,6 +163,7 @@ def create_train_state(
 
   d_rng, g_rng, z_rng = jax.random.split(rng, 3)
   image = inputs["image"]
+  print(image)
   batch_size = image.shape[0]
   # Tmage1.0
   logging.info(f"Batch size={batch_size}, image shape={image.shape}")
@@ -171,9 +172,11 @@ def create_train_state(
   generator_state = dict(generator_variables)
   generator_params = generator_state.pop("params")
   ema_params = generator_params
+  print(ema_params)
   all_images = jnp.concatenate([image, image], axis=0)
   discriminator_variables = discriminator(train=False).init(
       d_rng, [all_images, inputs])
+  print(dict(discriminator_variables))
   discriminator_state = dict(discriminator_variables)
   discriminator_params = discriminator_state.pop("params")
 

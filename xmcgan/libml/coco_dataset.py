@@ -22,6 +22,8 @@ from xmcgan.libml import dataset_constants
 import jax
 import jax.numpy as jnp
 
+tf.enable_eager_execution()
+
 _DEFAULT_STORAGE_DIR = "xmcgan/data/"
 _VALID_DATASET_VERSIONS = ("2014","2014-tmage")
 

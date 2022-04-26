@@ -110,7 +110,7 @@ class EvalMetric:
     def jax_save(file, arr):
       def save_to_file(file, a):
           jax.numpy.save(file, a)
-      hcb.id_tap(save_to_file, file, arr)
+      hcb.id_tap(save_to_file, arr)
 
     if config.dtype == "bfloat16":
       dtype = jnp.bfloat16

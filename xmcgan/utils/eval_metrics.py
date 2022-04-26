@@ -111,7 +111,7 @@ class EvalMetric:
       def save_to_file(a, transforms):
           B, h, w, c = a.shape()
           for i in range(B):
-            jax.numpy.save(file[i], a[i])
+            jax.numpy.save('/images/'+file[i], a[i])
       hcb.id_tap(save_to_file, arr)
 
     if config.dtype == "bfloat16":

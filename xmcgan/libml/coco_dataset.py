@@ -136,6 +136,7 @@ class COCODataset(base_dataset.BaseDataset):
     image = tf.image.stateless_random_flip_left_right(image, rng_flip)
     image = tf.clip_by_value(image, 0.0, 1.0)
     image_aug = augmentation.augment(image[None, ...], seed=rng_aug)[0, ...]
+    image_filename = features["image/filename"]
     embedding = features["caption/embedding"]
     max_len = features["caption/max_len"]
     max_len = tf.dtypes.cast(tf.expand_dims(max_len, axis=-1), tf.float32)
@@ -154,6 +155,7 @@ class COCODataset(base_dataset.BaseDataset):
     output = dict(
         image=tf.cast(image, self.data_dtype),
         image_aug=tf.cast(image_aug, self.data_dtype),
+        image_filename=image_filename,
         embedding=tf.cast(embedding[idx], self.data_dtype),
         max_len=tf.cast(max_len[idx], self.data_dtype),
         sentence_embedding=tf.cast(sentence_feat[idx], self.data_dtype),

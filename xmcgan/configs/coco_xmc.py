@@ -30,8 +30,8 @@ def get_config():
   config.dataset = "mscoco"
   config.coco_version = "2014"
   config.data_dir = "data/"
-  config.return_text = False
-  config.return_filename = False
+  config.return_text = True
+  config.return_filename = True
 
   config.trial = 0  # dummy for repeated runs.
   config.beta1 = 0.5

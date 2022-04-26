@@ -71,14 +71,10 @@ class EvalMetric:
     # Calculates pooling feature for real image only once to save time.
     self._pool = self._get_real_pool_for_evaluation()
 
-  def _jax_save(self, file, arr):
-      def save_to_file(a):
-          jax.numpy.save(file, a)
-      hcb.id_tap(save_to_file, arr)
-
   def _get_real_pool_for_evaluation(self):
     """Gets numpy arrays for pooling features and logits for real images."""
     logging.info("Get pool for %d samples", self.eval_num)
+
     n_iter = (self.eval_num // self.eval_batch_size) + 1
     pool = []
     for _ in range(n_iter):
@@ -111,6 +107,10 @@ class EvalMetric:
       generated_image: [batch_size, H, W, 3] array with values in [0, 1].
       ema_generated_image: [batch_size, H, W, 3] array with values in [0, 1].
     """
+    def jax_save(file, arr):
+      def save_to_file(a):
+          jax.numpy.save(file, a)
+      hcb.id_tap(save_to_file, arr)
 
     if config.dtype == "bfloat16":
       dtype = jnp.bfloat16
@@ -120,7 +120,6 @@ class EvalMetric:
         rng, (batch["image"].shape[0], config.z_dim), dtype=dtype)
     g_variables = {"params": state.g_optimizer.target}
     ema_g_variables = {"params": state.ema_params}
-    print(state.ema_params)
     g_variables.update(state.generator_state)
     ema_g_variables.update(state.generator_state)
 
@@ -130,7 +129,7 @@ class EvalMetric:
     generated_image = jnp.asarray(generated_image, jnp.float32)
     ema_generated_image = jnp.asarray(ema_generated_image, jnp.float32)
 
-    self._jax_save('generated_image.jpg', generated_image)
+    jax_save('generated_image.jpg', generated_image)
 
     return generated_image, ema_generated_image
 

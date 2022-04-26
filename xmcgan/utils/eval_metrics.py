@@ -71,7 +71,7 @@ class EvalMetric:
     # Calculates pooling feature for real image only once to save time.
     self._pool = self._get_real_pool_for_evaluation()
 
-  def _jax_save(file, arr):
+  def _jax_save(self, file, arr):
       def save_to_file(a):
           jax.numpy.save(file, a)
       hcb.id_tap(save_to_file, arr)

@@ -171,7 +171,6 @@ def create_train_state(
   generator_state = dict(generator_variables)
   generator_params = generator_state.pop("params")
   ema_params = generator_params
-  print(f'2 {ema_params}')
   all_images = jnp.concatenate([image, image], axis=0)
   discriminator_variables = discriminator(train=False).init(
       d_rng, [all_images, inputs])

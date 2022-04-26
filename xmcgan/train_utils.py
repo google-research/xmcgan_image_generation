@@ -154,6 +154,7 @@ def create_train_state(
 
   print('&*********************** Create train state, check for filename &***********************')
   print(f'{inputs["filename"]}')
+  print(f'{inputs["text"]}')
 
   if config.architecture == "xmc_net":
     generator_cls = xmc_net.Generator

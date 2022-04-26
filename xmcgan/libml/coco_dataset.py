@@ -161,7 +161,7 @@ class COCODataset(base_dataset.BaseDataset):
     if self.return_text:
       output["text"] = features["caption/text"][idx]
     if self.return_filename:
-      output["filename"] = features["image/filename"]
+      output["filename"] = tf.cast(features["image/filename"], tf.strings)
     z = tf.random.stateless_normal((self.z_dim,), rng_z, dtype=self.data_dtype)
     output.update({"z": z})
     return output

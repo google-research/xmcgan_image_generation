@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 img = np.load('generated_image.npy')
-fig = plt.figure(figsize=(8,8))
 B, H, W, C = img.shape
+
+fig = plt.figure(figsize=(8,8))
 
 for i in range(B):
     fig.add_subplot(1, 7, i)

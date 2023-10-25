@@ -59,7 +59,7 @@ tf-estimator-nightly==2.5.0.dev2021032501
 tqdm==4.60.0
 typing-extensions==3.7.4.3
 urllib3==1.26.4
-Werkzeug==1.0.1
+Werkzeug==3.0.1
 wrapt==1.12.1
 zipp==3.4.1
 bert-tensorflow==1.0.1

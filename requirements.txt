@@ -56,7 +56,7 @@ tensorflow-hub==0.12.0
 tensorflow-metadata==0.30.0
 termcolor==1.1.0
 tf-estimator-nightly==2.5.0.dev2021032501
-tqdm==4.60.0
+tqdm==4.66.3
 typing-extensions==3.7.4.3
 urllib3==1.26.4
 Werkzeug==1.0.1

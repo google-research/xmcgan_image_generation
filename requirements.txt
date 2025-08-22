@@ -11,7 +11,7 @@ cycler==0.10.0
 dill==0.3.3
 flatbuffers==1.12
 flax==0.3.3
-future==0.18.2
+future==1.0.0
 gast==0.4.0
 gin-config==0.4.0
 google-auth==1.30.0

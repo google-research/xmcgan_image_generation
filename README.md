@@ -59,7 +59,7 @@ You may have to adjust the limit values depending on your machine. You will need
 
 To train XMC-GAN, we need a network pretrained on ImageNet to extract features. For our purposes, we train a ResNet-50 network for this. To download the weights, run:
 ```
-gsutil cp gs://gresearch/xmcgan/resnet_pretrained.npy data/
+gcloud storage cp gs://gresearch/xmcgan/resnet_pretrained.npy data/
 ```
 If you would like to pretrain your own network on ImageNet, please refer to the [official Flax ImageNet example](https://github.com/google/flax/tree/master/examples/imagenet).
 
